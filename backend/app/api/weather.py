@@ -5,7 +5,7 @@ from app.services.llm_service import generate_weather_report
 router = APIRouter(prefix="/api/v1/weather", tags=["weather"])
 
 @router.get("/")
-async def get_weather(region: str, language: str = Query("en")):
+async def get_weather(region: str, language: str = Query("hi")):
     lat, lon = await get_coordinates_from_region(region)
     weather_data = await get_7_day_forecast(lat, lon)
     if not weather_data:

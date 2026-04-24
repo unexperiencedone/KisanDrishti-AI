@@ -51,7 +51,7 @@ class RecommendationRequest(BaseModel):
     farm_id: Optional[UUID] = None
     farm_size: float = Field(1.0, description="Size of the farm")
     farm_unit: str = Field("Hectare", description="Unit of the farm (Hectare, Acre, Bigha)")
-    language: str = Field("en", description="Output language: en / hi")
+    language: str = Field("hi", description="Output language: en / hi")
     include_organic: bool = Field(True, description="Include organic alternatives")
     sample_date: Optional[date] = None
 
@@ -80,7 +80,7 @@ class ValidateSoilRequest(BaseModel):
 class ExplainRequest(BaseModel):
     """Request for LLM-based explanation of an existing recommendation."""
     recommendation_id: UUID
-    language: str = "en"
+    language: str = "hi"
     question: Optional[str] = None
 
 

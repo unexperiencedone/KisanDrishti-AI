@@ -98,7 +98,7 @@ def _invoke_bedrock_converse(system_prompt: str, user_message: str) -> str:
         logger.error(f"Bedrock API error: {e}")
         raise e
 
-async def generate_explanation(soil: SoilInput, result: PrescriptionResult, language: str = "en", weather: Optional[Dict] = None, farm_size: float = 1.0, farm_unit: str = "Hectare") -> str:
+async def generate_explanation(soil: SoilInput, result: PrescriptionResult, language: str = "hi", weather: Optional[Dict] = None, farm_size: float = 1.0, farm_unit: str = "Hectare") -> str:
     if not bedrock_client:
         return _fallback_explanation(soil, result, language)
 
@@ -122,7 +122,7 @@ Use MARKDOWN for clear formatting.
 If asked about specific fertilizer doses, mention that they should use the 'Fertilizer Advisor' tool for a scientific calculation based on their soil test.
 """
 
-async def get_chat_response(message: str, language: str = "en") -> str:
+async def get_chat_response(message: str, language: str = "hi") -> str:
     if not bedrock_client:
         return "I'm sorry, my AI processing engine is currently offline. Please try again later."
     
@@ -137,7 +137,7 @@ async def get_chat_response(message: str, language: str = "en") -> str:
         logger.error(f"Chat generation failed: {e}")
         return "I encountered an error while processing your request. Please try again."
 
-async def generate_weather_report(weather: Dict, language: str = "en") -> str:
+async def generate_weather_report(weather: Dict, language: str = "hi") -> str:
     """Generate a comprehensive weather report/advisory for a farmer."""
     if not bedrock_client:
         return "Weather analysis is currently offline. Please check the raw data below."
