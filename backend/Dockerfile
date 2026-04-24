@@ -21,5 +21,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Production entrypoint using Gunicorn with Uvicorn workers
-# Scales to (2 * CPU cores) + 1 workers
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "--bind", "0.0.0.0:8000"]
+# We use 1 worker and increased timeout to stay within Render's free tier memory limits
+CMD ["gunicorn", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "--bind", "0.0.0.0:8000", "--timeout", "120"]
