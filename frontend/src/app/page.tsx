@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TopBar, BottomNav, SideDrawer } from "@/components/Navigation";
+import { cn } from "@/lib/utils";
 import ScreenSplash from "@/components/ScreenSplash";
 import ScreenHome from "@/components/ScreenHome";
 import ScreenAiAdvisor from "@/components/ScreenAiAdvisor";
@@ -103,7 +104,10 @@ export default function MobileAppOrchestrator() {
                 goBack();
               }
             }}
-            className="w-full h-full absolute inset-0 overflow-y-auto overflow-x-hidden pt-12 pb-20 scroll-smooth"
+            className={cn(
+              "w-full h-full absolute inset-0 overflow-x-hidden scroll-smooth",
+              activeScreen === "ai-advisor" ? "overflow-hidden pt-12 pb-0" : "overflow-y-auto pt-12 pb-4"
+            )}
           >
             {renderScreen()}
           </motion.div>
