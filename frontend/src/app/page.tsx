@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { TopBar, BottomNav, SideDrawer } from "@/components/Navigation";
 import ScreenSplash from "@/components/ScreenSplash";
 import ScreenHome from "@/components/ScreenHome";
@@ -16,77 +17,60 @@ import ScreenFertilizerAdvisor from "@/components/ScreenFertilizerAdvisor";
 
 export default function MobileAppOrchestrator() {
   const [activeScreen, setActiveScreen] = useState("splash");
+  const [history, setHistory] = useState<string[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  // Set initial screen
+  useEffect(() => {
+    if (activeScreen === "splash") {
+      // Splash screen logic...
+    }
+  }, []);
+
   const navigate = (screen: string) => {
+    if (screen === activeScreen) return;
+    setHistory(prev => [...prev, activeScreen]);
     setActiveScreen(screen);
-    // Scroll to top when changing screens
     window.scrollTo(0, 0);
+  };
+
+  const goBack = () => {
+    if (history.length > 0) {
+      const prev = history[history.length - 1];
+      setHistory(prevStack => prevStack.slice(0, -1));
+      setActiveScreen(prev);
+    }
   };
 
   const currentScreenTitle = () => {
     switch (activeScreen) {
-      case "home":
-      case "splash": // no top bar in splash
-        return "";
-      case "my-farm":
-        return "Farm Overview";
-      case "ai-advisor":
-        return "AI Advisor";
-      case "community":
-        return "Community";
-      case "weather":
-        return "Weather Forecast";
-      case "crop-health":
-        return "Crop Health";
-      case "soil-health":
-        return "Soil Health";
-      case "fertilizer-advisor":
-        return "Fertilizer Advisor";
-      case "irrigation-advisor":
-        return "Irrigation Advisor";
-      case "pest-detection":
-        return "Pest Detection";
-      case "market-prices":
-        return "Market Prices";
-      case "iot-dashboard":
-        return "IoT Dashboard";
-      case "alerts":
-        return "Alerts & Notifications";
-      default:
-        return "";
+      case "home": return "";
+      case "my-farm": return "Farm Overview";
+      case "ai-advisor": return "AI Advisor";
+      case "community": return "Community";
+      case "weather": return "Weather Forecast";
+      case "crop-health": return "Crop Health";
+      case "fertilizer-advisor": return "Fertilizer Advisor";
+      case "market-prices": return "Market Prices";
+      case "iot-dashboard": return "IoT Dashboard";
+      case "alerts": return "Alerts";
+      default: return "";
     }
   };
 
   const renderScreen = () => {
     switch (activeScreen) {
-      case "splash":
-        return <ScreenSplash navigate={navigate} />;
-      case "home":
-        return <ScreenHome navigate={navigate} />;
-      case "ai-advisor":
-        return <ScreenAiAdvisor navigate={navigate} />;
-      case "my-farm":
-      case "soil-health":
-      case "irrigation-advisor":
-      case "pest-detection":
-        return <ScreenMyFarm />;
-      case "community":
-        return <ScreenCommunity />;
-      case "iot-dashboard":
-        return <ScreenIotDashboard />;
-      case "market-prices":
-        return <ScreenMarketPrices navigate={navigate} />;
-      case "alerts":
-        return <ScreenAlerts />;
-      case "weather":
-        return <ScreenWeather />;
-      case "crop-health":
-        return <ScreenCropHealth />;
-      case "fertilizer-advisor":
-        return <ScreenFertilizerAdvisor />;
-      default:
-        return <ScreenHome navigate={navigate} />;
+      case "home": return <ScreenHome navigate={navigate} />;
+      case "ai-advisor": return <ScreenAiAdvisor navigate={navigate} />;
+      case "my-farm": return <ScreenMyFarm />;
+      case "community": return <ScreenCommunity />;
+      case "iot-dashboard": return <ScreenIotDashboard />;
+      case "market-prices": return <ScreenMarketPrices navigate={navigate} />;
+      case "alerts": return <ScreenAlerts />;
+      case "weather": return <ScreenWeather />;
+      case "crop-health": return <ScreenCropHealth />;
+      case "fertilizer-advisor": return <ScreenFertilizerAdvisor />;
+      default: return <ScreenHome navigate={navigate} />;
     }
   };
 
@@ -95,14 +79,35 @@ export default function MobileAppOrchestrator() {
   }
 
   return (
-    <div className="app-container flex flex-col bg-slate-50 overflow-hidden relative">
+    <div className="app-container flex flex-col bg-slate-50 overflow-hidden relative select-none">
       <TopBar 
         onMenuClick={() => setIsDrawerOpen(true)} 
         title={currentScreenTitle()} 
+        onBack={history.length > 0 ? goBack : undefined}
       />
       
+      {/* Main Screen Container with Gesture Support */}
       <div className="flex-1 overflow-hidden relative isolate z-0">
-         {renderScreen()}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeScreen}
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.4}
+            onDragEnd={(_, info) => {
+              if (info.offset.x > 100 && history.length > 0) {
+                goBack();
+              }
+            }}
+            className="w-full h-full absolute inset-0 overflow-y-auto overflow-x-hidden pt-12 pb-20 scroll-smooth"
+          >
+            {renderScreen()}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       <BottomNav activeScreen={activeScreen} navigate={navigate} />
