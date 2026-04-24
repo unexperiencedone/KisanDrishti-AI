@@ -95,52 +95,56 @@ async def get_market_prices(
 ):
     """
     Return commodity prices for `region`.
-
-    Cache hit  → response is served instantly from Supabase (no Agmarknet call).
-    Cache miss → Agmarknet is called once; result stored for the rest of the slot.
+    Resilient to DB and API failures.
     """
-    # ── 1. Try cache first ────────────────────────────────────────────────────
-    cached = await get_cached_prices(db, region)
-    if cached:
-        logger.info("Cache HIT for region='%s' slot=%s", region, cached["_cache"]["slot"])
-        return cached
-
-    # ── 2. Cache miss → call Agmarknet ────────────────────────────────────────
-    logger.info("Cache MISS for region='%s'. Fetching from Agmarknet…", region)
-    parts = [p.strip() for p in region.replace("/", ",").split(",")]
-    district = parts[0] if parts else "Kanpur"
-    state    = parts[1] if len(parts) > 1 else "Uttar Pradesh"
-
-    live_items = await _fetch_agmarknet(state, district)
-
-    if live_items:
-        commodities = [
-            {**item, "change_pct": 0.0, "trend": "stable", "source": "live"}
-            for item in live_items
-        ]
-        source = "Agmarknet (data.gov.in)"
-    else:
-        logger.warning("Agmarknet unavailable for '%s'; using fallback.", region)
-        commodities = []
-        for item in FALLBACK_PRICES:
-            ch = _pct_change(item["price"], item["prev_price"])
-            commodities.append({
-                "commodity": item["commodity"],
-                "price":     item["price"],
-                "unit":      "Quintal",
-                "change_pct": ch,
-                "trend":     "up" if ch > 0 else ("down" if ch < 0 else "stable"),
-                "source":    "estimated",
-            })
-        source = "Estimated (Agmarknet unavailable)"
-
-    payload = _build_response(commodities, region, source)
-
-    # ── 3. Store in Supabase cache (best-effort; never crash the response) ────
     try:
-        await store_cached_prices(db, region, payload, source)
-        logger.info("Cache STORED for region='%s'.", region)
-    except Exception as exc:
-        logger.warning("Cache write failed for '%s': %s", region, exc)
+        # ── 1. Try cache first ────────────────────────────────────────────────────
+        try:
+            cached = await get_cached_prices(db, region)
+            if cached:
+                logger.info("Cache HIT for region='%s' slot=%s", region, cached["_cache"]["slot"])
+                return cached
+        except Exception as db_err:
+            logger.warning("Cache fetch failed (DB issue): %s", db_err)
 
-    return payload
+        # ── 2. Cache miss or DB down → call Agmarknet ──────────────────────────────
+        logger.info("Fetching fresh prices for region='%s'...", region)
+        parts = [p.strip() for p in region.replace("/", ",").split(",")]
+        district = parts[0] if parts else "Kanpur"
+        state    = parts[1] if len(parts) > 1 else "Uttar Pradesh"
+
+        live_items = await _fetch_agmarknet(state, district)
+
+        if live_items:
+            commodities = [
+                {**item, "change_pct": 0.0, "trend": "stable", "source": "live"}
+                for item in live_items
+            ]
+            source = "Agmarknet (data.gov.in)"
+            
+            # Try to store in cache (non-blocking)
+            try:
+                payload = _build_response(commodities, region, source)
+                await store_cached_prices(db, region, payload, source)
+            except Exception:
+                pass
+                
+            return _build_response(commodities, region, source)
+
+    except Exception as global_err:
+        logger.error("Global market price error: %s", global_err)
+
+    # ── 3. Final Fallback (If both DB and API fail) ───────────────────────────
+    logger.warning("Using hardcoded fallback for '%s'", region)
+    commodities = []
+    for item in FALLBACK_PRICES:
+        ch = _pct_change(item["price"], item["prev_price"])
+        commodities.append({
+            "commodity": item["commodity"],
+            "price":     item["price"],
+            "unit":      "Quintal",
+            "change_pct": ch,
+            "trend":     "up" if ch > 0 else ("down" if ch < 0 else "stable"),
+            "source":    "estimated",
+        })
+    return _build_response(commodities, region, "Estimated (Service unavailable)")

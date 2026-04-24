@@ -18,6 +18,9 @@ logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
+from fastapi.responses import JSONResponse
+from fastapi import Request
+
 app = FastAPI(
     title="KisaanDrishti AI API",
     description="Precision Fertilizer Recommendation System for Indian farmers.",
@@ -26,11 +29,21 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*", "https://kisan-drishti-ai.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Global error: {exc}")
+    # Return a JSON response with CORS headers manually if needed, 
+    # but FastAPI's JSONResponse with middleware should handle it.
+    return JSONResponse(
+        status_code=500,
+        content={"message": "An internal server error occurred.", "detail": str(exc)},
+    )
 
 app.include_router(recommendations_router)
 app.include_router(weather_router)
