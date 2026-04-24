@@ -93,8 +93,8 @@ export default function ScreenWeather() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 overflow-hidden relative">
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6 pb-20">
+    <div className="bg-slate-50 min-h-full">
+      <div className="px-4 py-4 space-y-6">
 
         {/* 1. Hero Summary Card */}
         <motion.div 
@@ -108,7 +108,7 @@ export default function ScreenWeather() {
 
           <div className="flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[10px] font-bold tracking-tight mb-6 animate-pulse">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div> LIVE STATION: {REGION}
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div> लाइव स्टेशन: {REGION}
             </div>
 
             <div className="flex items-center justify-center gap-6 mb-2">
@@ -120,30 +120,30 @@ export default function ScreenWeather() {
                   <p className="text-lg font-bold text-emerald-600 -mt-1">{wmoLabel(today?.weather_code ?? 0)}</p>
                </div>
             </div>
-            <p className="text-slate-400 text-xs font-medium">Feels like {Math.round((today?.temp_max ?? 31) - 2)}°C • Clear Sky</p>
+            <p className="text-slate-400 text-xs font-medium">महसूस हो रहा {Math.round((today?.temp_max ?? 31) - 2)}°C • साफ़ आसमान</p>
           </div>
 
           {/* Detailed Row */}
           <div className="grid grid-cols-4 gap-2 mt-8 pt-6 border-t border-slate-50">
              <div className="text-center">
                 <div className="flex justify-center mb-1"><Droplets className="w-4 h-4 text-sky-500"/></div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Rain Prob</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">बारिश की संभावना</p>
                 <p className="font-bold text-slate-800 text-xs">{today?.precip_prob_pct}%</p>
              </div>
              <div className="text-center">
                 <div className="flex justify-center mb-1"><Wind className="w-4 h-4 text-slate-500"/></div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Wind</p>
-                <p className="font-bold text-slate-800 text-xs">{chartData[0]?.wind} km/h</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">हवा की गति</p>
+                <p className="font-bold text-slate-800 text-xs">{chartData[0]?.wind} किमी/घंटा</p>
              </div>
              <div className="text-center">
                 <div className="flex justify-center mb-1"><Activity className="w-4 h-4 text-amber-500"/></div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase">Humidity</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">नमी</p>
                 <p className="font-bold text-slate-800 text-xs">{chartData[0]?.humidity}%</p>
              </div>
              <div className="text-center">
                 <div className="flex justify-center mb-1"><Sun className="w-4 h-4 text-orange-400"/></div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase">UV Index</p>
-                <p className="font-bold text-slate-800 text-xs">High</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">UV सूचकांक</p>
+                <p className="font-bold text-slate-800 text-xs">उच्च</p>
              </div>
           </div>
         </motion.div>
@@ -155,7 +155,7 @@ export default function ScreenWeather() {
                  <Sunrise className="w-5 h-5"/>
               </div>
               <div>
-                 <p className="text-[10px] font-bold text-slate-400 uppercase">Sunrise</p>
+                 <p className="text-[10px] font-bold text-slate-400 uppercase">सूर्योदय</p>
                  <p className="text-sm font-black text-slate-800">5:42 AM</p>
               </div>
            </div>
@@ -164,7 +164,7 @@ export default function ScreenWeather() {
                  <Sunset className="w-5 h-5"/>
               </div>
               <div>
-                 <p className="text-[10px] font-bold text-slate-400 uppercase">Sunset</p>
+                 <p className="text-[10px] font-bold text-slate-400 uppercase">सूर्यास्त</p>
                  <p className="text-sm font-black text-slate-800">6:32 PM</p>
               </div>
            </div>

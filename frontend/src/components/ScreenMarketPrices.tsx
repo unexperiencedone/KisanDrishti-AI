@@ -45,12 +45,12 @@ export default function ScreenMarketPrices({ navigate }: { navigate: (screen: st
   useEffect(() => { load(); }, []);
 
   const asOf = data?.as_of
-    ? new Date(data.as_of).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
+    ? new Date(data.as_of).toLocaleTimeString("hi-IN", { hour: "2-digit", minute: "2-digit" })
     : null;
 
   return (
-    <div className="flex flex-col h-full bg-slate-50 pb-6">
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+    <div className="bg-slate-50 min-h-full">
+      <div className="px-4 py-4 space-y-6">
 
         {/* Region + Refresh */}
         <div className="flex justify-between items-center">
@@ -69,7 +69,7 @@ export default function ScreenMarketPrices({ navigate }: { navigate: (screen: st
         {/* Source & Timestamp */}
         {data && (
           <p className="text-[10px] text-slate-400 font-medium -mt-2 text-right">
-            {data.source} • Updated {asOf}
+            {data.source} • अपडेटेड {asOf}
           </p>
         )}
 
@@ -77,7 +77,7 @@ export default function ScreenMarketPrices({ navigate }: { navigate: (screen: st
         {loading && (
           <div className="flex items-center justify-center py-16 gap-3 text-slate-400">
             <Loader2 className="w-6 h-6 animate-spin" />
-            <span className="text-sm font-medium">Fetching mandi prices…</span>
+            <span className="text-sm font-medium">मंडी भाव लोड हो रहे हैं…</span>
           </div>
         )}
 
@@ -92,9 +92,9 @@ export default function ScreenMarketPrices({ navigate }: { navigate: (screen: st
         {data && !loading && (
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
             <div className="grid grid-cols-3 px-4 py-3 border-b border-slate-100 bg-slate-50/50">
-              <div className="text-xs font-bold text-slate-500 uppercase">Commodity</div>
-              <div className="text-xs font-bold text-slate-500 uppercase text-center">₹/Quintal</div>
-              <div className="text-xs font-bold text-slate-500 uppercase text-right">Change</div>
+              <div className="text-xs font-bold text-slate-500 uppercase">वस्तु</div>
+              <div className="text-xs font-bold text-slate-500 uppercase text-center">₹/क्विंटल</div>
+              <div className="text-xs font-bold text-slate-500 uppercase text-right">बदलाव</div>
             </div>
 
             {data.commodities.map((item: CommodityPrice, idx: number) => (

@@ -9,16 +9,16 @@ import { api, WeatherForecast, wmoToIcon } from "@/lib/api";
 const REGION = "Kanpur, Uttar Pradesh";
 
 const tools = [
-  { id: "weather",            title: "Weather Forecast",       emoji: "🌤️", url: "weather" },
-  { id: "crop-health",        title: "Crop Health",            emoji: "🌾", url: "crop-health" },
-  { id: "soil-health",        title: "Soil Health",            emoji: "🪱", url: "my-farm" },
-  { id: "fertilizer-advisor", title: "Fertilizer Advisor",     emoji: "🧪", url: "fertilizer-advisor" },
-  { id: "irrigation-advisor", title: "Irrigation Advisor",     emoji: "💧", url: "my-farm" },
-  { id: "pest-detection",     title: "Pest Detection",         emoji: "🐛", url: "my-farm" },
-  { id: "market-prices",      title: "Market Prices",          emoji: "📈", url: "market-prices" },
-  { id: "iot-dashboard",      title: "IoT Dashboard",          emoji: "📡", url: "iot-dashboard" },
-  { id: "alerts",             title: "Alerts",                 emoji: "🔔", url: "alerts", badge: true },
-  { id: "more",               title: "More Tools",             emoji: "⋯", url: "home" },
+  { id: "weather",            title: "मौसम",             emoji: "🌤️", url: "weather" },
+  { id: "crop-health",        title: "फसल स्वास्थ्य",       emoji: "🌾", url: "crop-health" },
+  { id: "soil-health",        title: "मिट्टी स्वास्थ्य",      emoji: "🪱", url: "my-farm" },
+  { id: "fertilizer-advisor", title: "उर्वरक सलाहकार",     emoji: "🧪", url: "fertilizer-advisor" },
+  { id: "irrigation-advisor", title: "सिंचाई सलाहकार",     emoji: "💧", url: "my-farm" },
+  { id: "pest-detection",     title: "कीट पहचान",         emoji: "🐛", url: "my-farm" },
+  { id: "market-prices",      title: "मंडी भाव",          emoji: "📈", url: "market-prices" },
+  { id: "iot-dashboard",      title: "IoT डैशबोर्ड",      emoji: "📡", url: "iot-dashboard" },
+  { id: "alerts",             title: "अलर्ट",             emoji: "🔔", url: "alerts", badge: true },
+  { id: "more",               title: "अधिक जानकारी",      emoji: "⋯", url: "home" },
 ];
 
 function WeatherMiniIcon({ code }: { code: number }) {
@@ -29,15 +29,15 @@ function WeatherMiniIcon({ code }: { code: number }) {
 }
 
 function advisoryMessage(forecast: WeatherForecast | null): string {
-  if (!forecast?.daily?.length) return "Stay updated on weather and market conditions for better farm planning.";
+  if (!forecast?.daily?.length) return "बेहतर कृषि योजना के लिए मौसम और मंडी की स्थिति पर नज़र रखें।";
   const today = forecast.daily[0];
   const tomorrow = forecast.daily[1];
   const rain = tomorrow?.precipitation_mm ?? 0;
   const prob = tomorrow?.precip_prob_pct ?? 0;
-  if (rain > 15) return "Heavy rainfall expected tomorrow. Avoid fertilizer application — high runoff risk.";
-  if (rain > 5 || prob > 50) return "Moderate rain expected in next 24 hours. Good time to plan for post-rain top-dressing.";
-  if ((today?.temp_max ?? 30) > 38) return "High temperatures today. Irrigate early morning or evening to reduce crop heat stress.";
-  return "No heavy rainfall in next 48 hours. Good time for irrigation and fertilization. Weather window is optimal.";
+  if (rain > 15) return "कल भारी बारिश की संभावना है। उर्वरक डालने से बचें - बह जाने का उच्च जोखिम है।";
+  if (rain > 5 || prob > 50) return "अगले 24 घंटों में मध्यम बारिश की संभावना है। बारिश के बाद खाद डालने की योजना बनाने का अच्छा समय है।";
+  if ((today?.temp_max ?? 30) > 38) return "आज बहुत अधिक तापमान है। फसल के गर्मी के तनाव को कम करने के लिए सुबह जल्दी या शाम को सिंचाई करें।";
+  return "अगले 48 घंटों में भारी बारिश की संभावना नहीं है। सिंचाई और खाद डालने के लिए अच्छा समय है। मौसम अनुकूल है।";
 }
 
 export default function ScreenHome({ navigate }: { navigate: (screen: string) => void }) {
@@ -64,29 +64,29 @@ export default function ScreenHome({ navigate }: { navigate: (screen: string) =>
 
   // Greeting based on time of day
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
+  const greeting = hour < 12 ? "शुभ प्रभात" : hour < 17 ? "शुभ दोपहर" : "शुभ संध्या";
 
-  const now = new Date().toLocaleDateString("en-IN", {
+  const now = new Date().toLocaleDateString("hi-IN", {
     day: "numeric", month: "long", year: "numeric", weekday: "long",
   });
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-50 pb-6">
+    <div className="bg-slate-50 min-h-full">
       <div className="p-4 space-y-4">
 
         {/* Welcome Card */}
         <div className="bg-emerald-800 rounded-3xl p-5 text-white shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-700 rounded-full blur-3xl -mr-10 -mt-10 opacity-50 pointer-events-none" />
           <h2 className="text-xl font-bold mb-1 relative z-10">
-            {greeting}, Ramesh Kumar! 👋
+            {greeting}, रमेश कुमार! 👋
           </h2>
           <p className="text-emerald-100 text-xs mb-4 relative z-10">
-            Here's what's happening on your farm today.
+            आज आपके खेत में क्या हो रहा है, यहाँ देखें।
           </p>
           <div className="flex justify-between items-end relative z-10">
             <p className="text-emerald-200 text-xs font-medium">{now}</p>
             <div className="flex items-center gap-1 text-emerald-200 text-xs bg-emerald-900/50 px-2 py-1 rounded-full border border-emerald-700">
-              <MapPin className="w-3 h-3" /> Kanpur, UP
+              <MapPin className="w-3 h-3" /> कानपुर, उत्तर प्रदेश
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@ export default function ScreenHome({ navigate }: { navigate: (screen: string) =>
           {loading ? (
             <div className="flex items-center gap-3 text-slate-400">
               <Loader2 className="w-6 h-6 animate-spin" />
-              <span className="text-sm">Loading weather…</span>
+              <span className="text-sm">मौसम लोड हो रहा है…</span>
             </div>
           ) : (
             <>
@@ -112,10 +112,10 @@ export default function ScreenHome({ navigate }: { navigate: (screen: string) =>
                   <p className="text-sm text-amber-500 font-bold mt-0.5">
                     {today
                       ? today.precipitation_mm > 5
-                        ? "Rainy"
+                        ? "बारिश"
                         : today.temp_max > 36
-                        ? "Hot & Dry"
-                        : "Sunny"
+                        ? "गर्मी और शुष्क"
+                        : "धूप"
                       : "—"}
                   </p>
                 </div>
@@ -123,15 +123,15 @@ export default function ScreenHome({ navigate }: { navigate: (screen: string) =>
               <div className="flex flex-col gap-1.5 border-l border-slate-100 pl-4">
                 <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
                   <Droplets className="w-3.5 h-3.5 text-sky-500" />
-                  Rain Prob: {today?.precip_prob_pct ?? 0}%
+                  बारिश: {today?.precip_prob_pct ?? 0}%
                 </div>
                 <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
                   <Wind className="w-3.5 h-3.5 text-slate-400" />
-                  Min: {Math.round(today?.temp_min ?? 22)}°C
+                  न्यूनतम: {Math.round(today?.temp_min ?? 22)}°C
                 </div>
                 <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
                   <CloudLightning className="w-3.5 h-3.5 text-slate-400" />
-                  Rain: {today?.precipitation_mm ?? 0} mm
+                  वर्षा: {today?.precipitation_mm ?? 0} मिमी
                 </div>
               </div>
             </>
@@ -170,11 +170,11 @@ export default function ScreenHome({ navigate }: { navigate: (screen: string) =>
         >
           <div className="relative z-10 w-3/4">
             <p className="text-amber-400 font-bold text-xs uppercase tracking-wider mb-1">
-              AI Advisory for You
+              आपके लिए AI सलाह
             </p>
             <p className="text-sm font-medium leading-relaxed mb-4">{advisory}</p>
             <button className="bg-white text-emerald-900 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-emerald-50 transition">
-              View Details <ChevronRight className="w-4 h-4" />
+              विवरण देखें <ChevronRight className="w-4 h-4" />
             </button>
           </div>
           <div className="absolute -bottom-3 -right-4 w-28 h-28 opacity-30 pointer-events-none">

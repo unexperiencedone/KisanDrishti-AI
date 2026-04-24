@@ -100,11 +100,11 @@ export function BottomNav({
   navigate: (screen: string) => void;
 }) {
   const tabs = [
-    { id: "home", icon: Home, label: "Home" },
-    { id: "my-farm", icon: Sprout, label: "My Farm" },
-    { id: "ai-advisor", icon: MessageSquare, label: "AI Advisor" },
-    { id: "community", icon: Users, label: "Community" },
-    { id: "profile", icon: User, label: "Profile" },
+    { id: "home", icon: Home, label: "मुख्य पृष्ठ" },
+    { id: "my-farm", icon: Sprout, label: "मेरा खेत" },
+    { id: "ai-advisor", icon: MessageSquare, label: "AI सलाहकार" },
+    { id: "community", icon: Users, label: "समुदाय" },
+    { id: "profile", icon: User, label: "प्रोफ़ाइल" },
   ];
 
   return (
@@ -162,28 +162,28 @@ export function SideDrawer({
   navigate: (screen: string) => void;
 }) {
   const menuItems = [
-    { id: "home", icon: Home, label: "Home" },
-    { id: "my-farm", icon: Sprout, label: "My Farms" },
-    { id: "weather", icon: Sun, label: "Weather Forecast" },
-    { id: "crop-health", icon: Activity, label: "Crop Health" },
-    { id: "soil-health", icon: Target, label: "Soil Health" },
-    { id: "fertilizer-advisor", icon: CheckCircle, label: "Fertilizer Advisor" },
-    { id: "irrigation-advisor", icon: Droplet, label: "Irrigation Advisor" },
-    { id: "pest-detection", icon: ThermometerSun, label: "Pest Detection" },
-    { id: "market-prices", icon: LineChart, label: "Market Prices" },
-    { id: "iot-dashboard", icon: CloudLightning, label: "IoT Dashboard" },
+    { id: "home", icon: Home, label: "मुख्य पृष्ठ" },
+    { id: "my-farm", icon: Sprout, label: "मेरे खेत" },
+    { id: "weather", icon: Sun, label: "मौसम का पूर्वानुमान" },
+    { id: "crop-health", icon: Activity, label: "फसल स्वास्थ्य" },
+    { id: "soil-health", icon: Target, label: "मिट्टी का स्वास्थ्य" },
+    { id: "fertilizer-advisor", icon: CheckCircle, label: "उर्वरक सलाहकार" },
+    { id: "irrigation-advisor", icon: Droplet, label: "सिंचाई सलाहकार" },
+    { id: "pest-detection", icon: ThermometerSun, label: "कीट पहचान" },
+    { id: "market-prices", icon: LineChart, label: "मंडी भाव" },
+    { id: "iot-dashboard", icon: CloudLightning, label: "IoT डैशबोर्ड" },
     {
       id: "alerts",
       icon: Bell,
-      label: "Alerts & Notifications",
+      label: "अलर्ट और सूचनाएं",
       badge: "3",
       badgeColor: "bg-red-500",
     },
-    { id: "knowledge", icon: BookOpen, label: "Knowledge Center" },
-    { id: "community", icon: Users, label: "Community" },
-    { id: "store", icon: ShoppingCart, label: "Agri Store" },
-    { id: "settings", icon: Settings, label: "Settings" },
-    { id: "help", icon: HelpCircle, label: "Help & Support" },
+    { id: "knowledge", icon: BookOpen, label: "ज्ञान केंद्र" },
+    { id: "community", icon: Users, label: "समुदाय" },
+    { id: "store", icon: ShoppingCart, label: "कृषि स्टोर" },
+    { id: "settings", icon: Settings, label: "सेटिंग्स" },
+    { id: "help", icon: HelpCircle, label: "सहायता और सुझाव" },
   ];
 
   return (
@@ -212,9 +212,16 @@ export function SideDrawer({
             />
             <div className="text-white">
               <h2 className="font-bold text-lg leading-tight text-white">Ramesh Kumar</h2>
-              <p className="text-emerald-200 text-xs flex items-center gap-1">
-                Farmer <MapPin className="w-3 h-3 ml-1 inline" /> Kanpur, UP
-              </p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-emerald-200 text-xs">Farmer</span>
+                <span className="w-1 h-1 bg-white/30 rounded-full"></span>
+                <button 
+                  onClick={() => {/* Toggle Logictoggled by parent if needed, but for now just UI */}}
+                  className="bg-white/10 px-2 py-0.5 rounded text-[10px] font-bold border border-white/10"
+                >
+                  हिन्दी
+                </button>
+              </div>
             </div>
           </div>
           <button onClick={onClose} className="p-2 text-white/70 hover:text-white rounded-full">

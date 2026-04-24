@@ -45,15 +45,15 @@ export default function MobileAppOrchestrator() {
   const currentScreenTitle = () => {
     switch (activeScreen) {
       case "home": return "";
-      case "my-farm": return "Farm Overview";
-      case "ai-advisor": return "AI Advisor";
-      case "community": return "Community";
-      case "weather": return "Weather Forecast";
-      case "crop-health": return "Crop Health";
-      case "fertilizer-advisor": return "Fertilizer Advisor";
-      case "market-prices": return "Market Prices";
-      case "iot-dashboard": return "IoT Dashboard";
-      case "alerts": return "Alerts";
+      case "my-farm": return "खेत का अवलोकन";
+      case "ai-advisor": return "AI सलाहकार";
+      case "community": return "समुदाय";
+      case "weather": return "मौसम का पूर्वानुमान";
+      case "crop-health": return "फसल स्वास्थ्य";
+      case "fertilizer-advisor": return "उर्वरक सलाहकार";
+      case "market-prices": return "मंडी भाव";
+      case "iot-dashboard": return "IoT डैशबोर्ड";
+      case "alerts": return "अलर्ट";
       default: return "";
     }
   };

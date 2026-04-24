@@ -10,7 +10,7 @@ type Message = {
 
 export default function ScreenAiAdvisor({ navigate }: { navigate: (screen: string) => void }) {
   const [messages, setMessages] = useState<Message[]>([
-    { role: "ai", text: "Hi Ramesh! 👋 I'm your AI farming advisor. How can I help you today?" }
+    { role: "ai", text: "नमस्ते रमेश! 👋 मैं आपका AI कृषि सलाहकार हूँ। आज मैं आपकी क्या मदद कर सकता हूँ?" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export default function ScreenAiAdvisor({ navigate }: { navigate: (screen: strin
     setLoading(true);
 
     try {
-      const res = await api.chat(userMsg);
+      const res = await api.chat(userMsg, "hi");
       setMessages(prev => [...prev, { role: "ai", text: res.response }]);
     } catch (err) {
       setMessages(prev => [...prev, { role: "ai", text: "I'm sorry, I'm having trouble connecting right now. Please try again later." }]);

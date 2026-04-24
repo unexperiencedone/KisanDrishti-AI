@@ -160,7 +160,7 @@ const weatherCache: Record<string, { data: WeatherResponse; timestamp: number }>
 const WEATHER_CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
 export const api = {
-  weather: async (region: string, language: string = "en"): Promise<WeatherResponse> => {
+  weather: async (region: string, language: string = "hi"): Promise<WeatherResponse> => {
     const cached = weatherCache[region];
     const now = Date.now();
     
@@ -200,7 +200,7 @@ export const api = {
 
   crops: () => get<{ crops: { name: string }[] }>("/api/v1/crops"),
 
-  chat: (message: string, language: string = "en") =>
+  chat: (message: string, language: string = "hi") =>
     post<{ response: string }>("/api/v1/chat/", { message, language }),
     
   farmSummary: () => get<{

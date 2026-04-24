@@ -15,7 +15,7 @@ const DEFAULT: RecommendationRequest = {
   region: "Kanpur/Central UP",
   soil_type: "Alluvial",
   is_irrigated: true,
-  language: "en",
+  language: "hi",
   farm_size: 1.0,
   farm_unit: "Acre",
   soil: {
@@ -107,8 +107,8 @@ export default function ScreenFertilizerAdvisor() {
   // ─── Overview (static design-matching view) ───────────────────────────────
   if (view === "overview") {
     return (
-      <div className="flex flex-col h-full bg-slate-50 pb-6">
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+      <div className="bg-slate-50 min-h-full">
+        <div className="px-4 py-4 space-y-6">
 
           {/* Crop Card */}
           <div className="bg-white rounded-3xl p-4 border border-slate-100 shadow-sm flex gap-4">
@@ -201,8 +201,8 @@ export default function ScreenFertilizerAdvisor() {
     ];
 
     return (
-      <div className="flex flex-col h-full bg-slate-50 pb-6">
-        <div className="flex-1 overflow-y-auto px-4 py-4">
+      <div className="bg-slate-50 min-h-full">
+        <div className="px-4 py-4">
           <form onSubmit={onSubmit} className="space-y-6">
 
             {/* Farm Profile */}
@@ -279,8 +279,8 @@ export default function ScreenFertilizerAdvisor() {
                   value={form.language}
                   onChange={(e) => setForm((p) => ({ ...p, language: e.target.value }))}
                 >
-                  <option value="en">English</option>
                   <option value="hi">हिंदी (Hindi)</option>
+                  <option value="en">English</option>
                 </select>
               </div>
             </div>
@@ -351,8 +351,8 @@ export default function ScreenFertilizerAdvisor() {
     );
 
     return (
-      <div className="flex flex-col h-full bg-slate-50 pb-6">
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+      <div className="bg-slate-50 min-h-full">
+        <div className="px-4 py-4 space-y-6">
 
           {/* Summary Banner */}
           <div className={`rounded-3xl p-5 border shadow-sm ${result.is_cultivable ? "bg-emerald-50 border-emerald-100" : "bg-red-50 border-red-100"}`}>
