@@ -105,8 +105,8 @@ export default function MobileAppOrchestrator() {
               }
             }}
             className={cn(
-              "w-full h-full absolute inset-0 overflow-x-hidden scroll-smooth",
-              activeScreen === "ai-advisor" ? "overflow-hidden pt-12 pb-0" : "overflow-y-auto pt-14 pb-28"
+              "w-full h-full absolute inset-0 overflow-x-hidden scroll-smooth pt-14 pb-28",
+              activeScreen === "ai-advisor" ? "overflow-hidden" : "overflow-y-auto"
             )}
           >
             {renderScreen()}
