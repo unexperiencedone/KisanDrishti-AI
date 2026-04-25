@@ -84,7 +84,7 @@ export default function MobileAppOrchestrator() {
       <TopBar 
         onMenuClick={() => setIsDrawerOpen(true)} 
         title={currentScreenTitle()} 
-        onBack={history.length > 0 ? goBack : undefined}
+        onBack={activeScreen !== "home" && history.length > 0 ? goBack : undefined}
       />
       
       {/* Main Screen Container with Gesture Support */}
@@ -106,7 +106,7 @@ export default function MobileAppOrchestrator() {
             }}
             className={cn(
               "w-full h-full absolute inset-0 overflow-x-hidden scroll-smooth",
-              activeScreen === "ai-advisor" ? "overflow-hidden pt-12 pb-0" : "overflow-y-auto pt-12 pb-4"
+              activeScreen === "ai-advisor" ? "overflow-hidden pt-12 pb-0" : "overflow-y-auto pt-14 pb-28"
             )}
           >
             {renderScreen()}

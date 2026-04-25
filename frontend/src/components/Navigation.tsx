@@ -43,7 +43,7 @@ export function TopBar({
   onBack?: () => void;
 }) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white fixed top-0 left-0 right-0 z-40 border-b border-slate-100 shadow-sm safe-top">
+    <div className="flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-xl fixed top-0 left-0 right-0 z-40 border-b border-slate-100 shadow-sm safe-top">
       <div className="flex items-center gap-3">
         {onBack ? (
           <button
@@ -103,7 +103,7 @@ export function BottomNav({
   ];
 
   return (
-    <div className="sticky bottom-0 z-40 bg-white border-t border-slate-100 shadow-[0_-4px_10px_rgba(0,0,0,0.02)] w-full pb-safe">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-xl border-t border-slate-100 shadow-[0_-8px_20px_rgba(0,0,0,0.05)] w-full pb-safe">
       <div className="flex justify-between items-center px-6 py-2">
         {tabs.map((tab) => {
           const isActive = activeScreen === tab.id;
